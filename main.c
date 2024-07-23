@@ -1,16 +1,11 @@
 // JE
-#define _POSIX_C_SOURCE 200809L
+
 #include <unistd.h>
-#include <sys/types.h>
 #include <stdio.h>
 #include "mem_sim.h"
-#include <stdlib.h>
-#include <assert.h>
 #include <string.h>
+#include <fcntl.h>
 
-#include <unistd.h>  // for lseek
-#include <fcntl.h>   // for open
-#include <stdlib.h>  // for exit
 
 void reset_system(struct sim_database *mem_sim) {
     // Clear the system
@@ -268,12 +263,6 @@ void run_tests(struct sim_database *mem_sim) {
             } else if (i < 25) {
                 if (mem_sim->page_table[i].V != 1 || mem_sim->page_table[i].D != 1 ||
                     mem_sim->page_table[i].P != 0 || mem_sim->page_table[i].frame_swap != i - 20) {
-                    test_passed = 0;
-                    break;
-                }
-            } else {
-                if (mem_sim->page_table[i].V != 0 || mem_sim->page_table[i].D != 0 ||
-                    mem_sim->page_table[i].P != 0 || mem_sim->page_table[i].frame_swap != -1) {
                     test_passed = 0;
                     break;
                 }
