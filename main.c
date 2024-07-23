@@ -6,6 +6,17 @@
 #include <string.h>
 #include <fcntl.h>
 
+void reset_system(struct sim_database *mem_sim);
+void run_tests(struct sim_database *mem_sim);
+
+int main(int argc, char *argv[]) {
+    char val;
+    struct sim_database *mem_sim;
+    mem_sim = init_system ("exec_file", "swap_file" ,40,40,120);
+    run_tests(mem_sim);
+    clear_system(mem_sim);
+    return 0;
+}
 
 void reset_system(struct sim_database *mem_sim) {
     // Clear the system
@@ -329,14 +340,7 @@ void run_tests(struct sim_database *mem_sim) {
     printf("\nAll tests completed.\n");
 }
 
-int main(int argc, char *argv[]) {
-    char val;
-    struct sim_database *mem_sim;
-    mem_sim = init_system ("exec_file", "swap_file" ,40,40,120);
-    run_tests(mem_sim);
-    clear_system(mem_sim);
-    return 0;
-}
+
 
 // JE
 
