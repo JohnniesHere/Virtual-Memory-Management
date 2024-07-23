@@ -10,7 +10,7 @@
 static int NEXT_FRAME_TO_SWAP = 0;
 static int NEXT_SWAP_LOCATION = 0;
 
-// Function to reset the static variables ---------------------------------------
+// Function to reset the global variables --------------------------------------
 void reset_swap_variables() {
     NEXT_FRAME_TO_SWAP = 0;
     NEXT_SWAP_LOCATION = 0;
@@ -97,7 +97,7 @@ static int swap_out_page(struct sim_database *mem_sim) {
 
                 // Update next_frame_to_swap
                 NEXT_FRAME_TO_SWAP = (NEXT_FRAME_TO_SWAP + 1) % total_frames;
-                printf("Swapped out page %d from frame %d to swap location %d\n", i, frame_to_check, page->frame_swap);
+                //printf("Swapped out page %d from frame %d to swap location %d\n", i, frame_to_check, page->frame_swap); // Debugging
                 return frame_to_check;
             }
         }
@@ -177,7 +177,7 @@ char load(struct sim_database* mem_sim, int address) {
     int page_number = address / PAGE_SIZE;
     int offset = address % PAGE_SIZE;
 
-    printf("Loading address %d (page %d, offset %d)\n", address, page_number, offset);
+    //printf("Loading address %d (page %d, offset %d)\n", address, page_number, offset);// Debugging
 
     if (page_number >= NUM_OF_PAGES) {
         fprintf(stderr, "Error: Invalid address\n");
@@ -186,8 +186,7 @@ char load(struct sim_database* mem_sim, int address) {
 
      page_descriptor *page = &mem_sim->page_table[page_number];
 
-    printf("Page state before load: V=%d, D=%d, P=%d, frame_swap=%d\n",
-           page->V, page->D, page->P, page->frame_swap);
+    //printf("Page state before load: V=%d, D=%d, P=%d, frame_swap=%d\n",page->V, page->D, page->P, page->frame_swap); // Debugging
 
     if (!page->V) {
         int frame = handle_page_fault(mem_sim, page_number);
@@ -200,9 +199,8 @@ char load(struct sim_database* mem_sim, int address) {
     int physical_address = page->frame_swap * PAGE_SIZE + offset;
     char value = mem_sim->main_memory[physical_address];
 
-    printf("Page state after load: V=%d, D=%d, P=%d, frame_swap=%d\n",
-           page->V, page->D, page->P, page->frame_swap);
-    printf("Loaded value: '%c'\n", value);
+//    printf("Page state after load: V=%d, D=%d, P=%d, frame_swap=%d\n", page->V, page->D, page->P, page->frame_swap); // Debugging
+//    printf("Loaded value: '%c'\n", value); // Debugging
 
     return value;
 }
@@ -212,7 +210,7 @@ void store(struct sim_database* mem_sim, int address, char value) {
     int page_number = address / PAGE_SIZE;
     int offset = address % PAGE_SIZE;
 
-    printf("Storing value '%c' at address %d (page %d, offset %d)\n", value, address, page_number, offset);
+//    printf("Storing value '%c' at address %d (page %d, offset %d)\n", value, address, page_number, offset); // Debugging
 
     if (page_number >= NUM_OF_PAGES) {
         fprintf(stderr, "Error: Invalid address\n");
@@ -221,8 +219,7 @@ void store(struct sim_database* mem_sim, int address, char value) {
 
      page_descriptor *page = &mem_sim->page_table[page_number];
 
-    printf("Page state before store: V=%d, D=%d, P=%d, frame_swap=%d\n",
-           page->V, page->D, page->P, page->frame_swap);
+    //printf("Page state before store: V=%d, D=%d, P=%d, frame_swap=%d\n", page->V, page->D, page->P, page->frame_swap); // Debugging
 
     if (page->P) {
         fprintf(stderr, "Error: Write access denied to read-only page\n");
@@ -241,9 +238,8 @@ void store(struct sim_database* mem_sim, int address, char value) {
     mem_sim->main_memory[physical_address] = value;
     page->D = 1;
 
-    printf("Page state after store: V=%d, D=%d, P=%d, frame_swap=%d\n",
-           page->V, page->D, page->P, page->frame_swap);
-    printf("Stored value: '%c'\n", value);
+    //printf("Page state after store: V=%d, D=%d, P=%d, frame_swap=%d\n", page->V, page->D, page->P, page->frame_swap);// Debugging
+    //printf("Stored value: '%c'\n", value);
 }
 
 //Print Functions --------------------------------------------------------------
